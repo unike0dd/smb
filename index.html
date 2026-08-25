@@ -30,6 +30,41 @@ html[data-theme="dark"] .task,html[data-theme="dark"] .data-row,html[data-theme=
 html[data-theme="dark"] img{filter:brightness(.88)}
 @media(max-width:720px){.ui-preferences{position:fixed;right:10px;bottom:74px}.ui-toggle{height:38px;background:#fff;color:#1b2b38}}
 
+
+/* Accessible zoom and responsive reflow standard — 45% through 200% */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{overflow-x:hidden}
+img,svg,canvas,video{max-width:100%;height:auto}
+button,a,input,select,textarea{max-width:100%}
+.workspace,.content,.panel,.dashboard-grid,.right-stack,.metrics,.welcome,.topbar,.role-tabs,.top-actions,.data-row,.row-main{min-width:0}
+@media(max-width:900px){
+  .welcome{align-items:flex-start;flex-direction:column}
+  .welcome .primary{align-self:stretch;min-height:44px;white-space:normal}
+  .topbar{height:auto;min-height:64px;flex-wrap:wrap}
+  .role-tabs{width:100%;max-width:100%;overflow-x:auto}
+  .top-actions{margin-left:auto;flex-wrap:wrap}
+}
+@media(max-width:720px){
+  .topbar{align-items:stretch}
+  .content{padding-inline:clamp(12px,4vw,22px)}
+  .primary{font-size:11px;padding:11px 16px}
+  .primary::first-letter{font-size:inherit}
+  .metrics{grid-template-columns:1fr}
+  .metrics article{overflow-wrap:anywhere}
+  .panel{padding:clamp(13px,4vw,18px)}
+  .panel-title{flex-wrap:wrap}
+  .data-row{grid-template-columns:minmax(0,1fr);gap:7px}
+  .data-row>strong,.data-row>em,.data-row>.status{display:block;justify-self:start}
+  .row-main b{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+  .ui-preferences{position:static;margin-left:auto}
+  .toast{left:12px;right:12px;bottom:78px;max-width:calc(100% - 24px)}
+}
+@media(max-width:380px){
+  .topbar{padding-inline:10px}
+  .role-tabs button{white-space:normal}
+  .side-nav button{min-width:58px}
+}
+
 </style>
 </head>
 <body>
