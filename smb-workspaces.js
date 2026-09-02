@@ -126,6 +126,23 @@
   const chartMarkup = () => `<div class="bar-chart">${[["Confirmation rate", 74], ["Interview completion", 88], ["Interview → approval", 66], ["Offer acceptance", 84], ["Onboarding completion", 91]].map(item => `<div class="bar-row"><span>${item[0]}</span><div class="bar-track"><div class="bar-fill" style="width:${item[1]}%"></div></div><b>${item[1]}%</b></div>`).join("")}</div>`;
   const approvalMarkup = () => `<div class="approval-chain"><div class="approval-step done">Requester<br>Submitted</div><div class="approval-step done">Manager<br>Approved</div><div class="approval-step current">HR Manager<br>Reviewing</div><div class="approval-step">SMB Owner<br>When required</div><div class="approval-step">Audit<br>Recorded</div></div>`;
 
+  let clientReturnFocus = null;
+  const openClientForm = trigger => {
+    const modal = $("clientModal");
+    if (!modal) return;
+    clientReturnFocus = trigger || document.activeElement;
+    modal.hidden = false;
+    document.body.classList.add("client-modal-open");
+    requestAnimationFrame(() => modal.querySelector('input[name="businessName"]')?.focus());
+  };
+  const closeClientForm = () => {
+    const modal = $("clientModal");
+    if (!modal || modal.hidden) return;
+    modal.hidden = true;
+    document.body.classList.remove("client-modal-open");
+    clientReturnFocus?.focus?.();
+  };
+
   const specialCard = (screen, data) => {
     if (screen === "talentacquisition") return `<article class="workspace-card full"><div class="workspace-card-head"><h3>Authoritative candidate pipeline</h3><span>19 controlled stages</span></div>${stageMarkup(data.stages)}<div class="security-note">Candidate retrieval is limited to profiles with active recruiter-visibility consent and data-sharing authorization.</div></article>`;
     if (screen === "businessapprovals") return `<article class="workspace-card full"><div class="workspace-card-head"><h3>Approval chain preview</h3><span>Action-specific</span></div>${approvalMarkup()}<div class="prototype-lock">Sensitive approvals require a trusted backend, authenticated tenant membership, exact permission, step-up authentication and an immutable audit event. Passwords are never emailed or written to audit logs.</div></article>`;
@@ -154,7 +171,7 @@
     const reportingFilters = screen === "businessanalytics" ? `<div class="filter-row">${data.fields.map(field => `<select aria-label="${field}"><option>${field}: All</option></select>`).join("")}</div>` : "";
     host.innerHTML = `<div class="workspace-shell"><header class="workspace-toolbar"><div><h2>${data.title}</h2><p>${data.description}</p></div><div class="workspace-actions">${data.actions.map((action, index) => `<button class="workspace-button ${index === 0 ? "primary-action" : ""}" type="button" data-workspace-action="${action}">${action}</button>`).join("")}</div></header><nav class="workspace-tabs" aria-label="${data.title} sections">${data.tabs.map(name => `<button class="workspace-tab ${name === tab ? "active" : ""}" type="button" data-workspace-tab="${name}">${name}</button>`).join("")}</nav>${statsMarkup(data.stats)}${reportingFilters}<section class="workspace-grid">${specialCard(screen, data)}<article class="workspace-card"><div class="workspace-card-head"><h3>${tab} tasks</h3><span>${data.tasks.length} active</span></div>${tasksMarkup(data.tasks)}</article><article class="workspace-card"><h3>${tab} categories</h3><p>Use these groups to filter and organize this workspace.</p>${tilesMarkup(data.groups)}</article><article class="workspace-card full"><div class="workspace-card-head"><h3>${tab} records</h3><span>Recent activity</span></div>${recordsMarkup(data.records)}</article><article class="workspace-card full"><h3>Add or update ${tab.toLowerCase()}</h3><p>Prototype fields are available for workflow design. Saving creates a local interface event until the trusted backend is connected.</p>${fieldsMarkup(data.fields, tab)}</article>${screen === "directory" ? '<article class="workspace-card full"><div class="prototype-lock">Personal contacts, candidate records, salary, medical documents and client billing details require separate permissions. Ordinary staff access is not implied.</div></article>' : ""}</section></div>`;
     host.querySelectorAll("[data-workspace-tab]").forEach(button => button.addEventListener("click", () => render(screen, button.dataset.workspaceTab)));
-    host.querySelectorAll("[data-workspace-action]").forEach(button => button.addEventListener("click", () => toast(`${button.dataset.workspaceAction} opened`)));
+    host.querySelectorAll("[data-workspace-action]").forEach(button => button.addEventListener("click", () => button.dataset.workspaceAction === "Add client" ? openClientForm(button) : toast(`${button.dataset.workspaceAction} opened`)));
     host.querySelectorAll(".workspace-form").forEach(form => form.addEventListener("submit", event => { event.preventDefault(); toast(`${tab} request prepared for backend validation`); }));
   };
 
@@ -163,6 +180,52 @@
   render(active);
   $("sideNav")?.addEventListener("click", event => {
     const button = event.target.closest("[data-screen]");
-    if (button) setTimeout(() => render(button.dataset.screen), 0);
+    if (button) {
+      setTimeout(() => render(button.dataset.screen), 0);
+      if (window.matchMedia("(max-width: 720px)").matches) setSidebar(false);
+    }
+  });
+
+  const app = $("dashboardApp"), menuToggle = $("menuToggle"), backdrop = $("menuBackdrop");
+  const setSidebar = open => {
+    if (!app || !menuToggle) return;
+    app.classList.toggle("sidebar-collapsed", !open);
+    menuToggle.setAttribute("aria-expanded", String(open));
+    menuToggle.setAttribute("aria-label", `${open ? "Close" : "Open"} navigation menu`);
+    if (backdrop) backdrop.hidden = !(open && window.matchMedia("(max-width: 720px)").matches);
+  };
+  setSidebar(!window.matchMedia("(max-width: 720px)").matches);
+  menuToggle?.addEventListener("click", () => setSidebar(menuToggle.getAttribute("aria-expanded") !== "true"));
+  backdrop?.addEventListener("click", () => setSidebar(false));
+  window.addEventListener("resize", () => {
+    if (!window.matchMedia("(max-width: 720px)").matches && backdrop) backdrop.hidden = true;
+  });
+
+  document.addEventListener("click", event => {
+    const trigger = event.target.closest('[data-action="Add client opened"]');
+    if (!trigger) return;
+    event.preventDefault();
+    event.stopPropagation();
+    openClientForm(trigger);
+  }, true);
+  $("clientModal")?.addEventListener("click", event => {
+    if (event.target === event.currentTarget || event.target.closest("[data-close-client]")) closeClientForm();
+  });
+  $("copyPrimaryContact")?.addEventListener("change", event => {
+    if (!event.target.checked) return;
+    const form = $("clientForm");
+    form.elements.billingName.value = form.elements.contactName.value;
+    form.elements.billingEmail.value = form.elements.contactEmail.value;
+  });
+  $("clientForm")?.addEventListener("submit", event => {
+    event.preventDefault();
+    toast("Client record prepared for secure backend validation");
+    event.currentTarget.reset();
+    closeClientForm();
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key !== "Escape") return;
+    if (!$("clientModal")?.hidden) closeClientForm();
+    else if (window.matchMedia("(max-width: 720px)").matches) setSidebar(false);
   });
 })();
