@@ -73,14 +73,14 @@ button,a,input,select,textarea{max-width:100%}
 <link rel="stylesheet" href="smb-workspaces.css?v=1">
 </head>
 <body>
-<main class="app">
- <aside class="sidebar">
+<main class="app" id="dashboardApp">
+ <aside class="sidebar" id="appSidebar">
   <div class="brand"><span class="brand-mark">G</span><span>Gabriel Services<small>People, beautifully managed</small></span></div>
   <div class="side-context"><small>WORKSPACE</small><strong id="workspaceName"></strong></div>
   <nav class="side-nav" id="sideNav" aria-label="Dashboard navigation"></nav>
  </aside>
  <section class="workspace">
-  <header class="topbar"><div class="top-actions"><label class="search"><span>⌕</span><input id="search" aria-label="Search screen" placeholder="Search"></label><button class="round" data-action="3 notifications ready" aria-label="Notifications">♢<em></em></button></div></header>
+  <header class="topbar"><button class="menu-toggle" id="menuToggle" type="button" aria-label="Close navigation menu" aria-controls="appSidebar" aria-expanded="true"><span></span><span></span><span></span></button><div class="top-actions"><label class="search"><span>⌕</span><input id="search" aria-label="Search screen" placeholder="Search"></label><button class="round notification-button" data-action="3 notifications ready" aria-label="Notifications: 3 unread" title="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><em></em></button></div></header>
   <div class="content">
    <div class="breadcrumb"><span id="crumbRole"></span> <span>/</span> <span id="crumbScreen"></span></div>
    <section class="welcome"><div><span class="eyebrow" id="eyebrow"></span><h1 id="title"></h1><p id="subtitle"></p></div><button class="primary" id="primary"></button></section>
@@ -104,6 +104,41 @@ button,a,input,select,textarea{max-width:100%}
   </div>
  </section>
 </main>
+<button class="menu-backdrop" id="menuBackdrop" type="button" aria-label="Close navigation menu" hidden></button>
+
+<div class="client-modal" id="clientModal" role="dialog" aria-modal="true" aria-labelledby="clientModalTitle" hidden>
+ <div class="client-dialog">
+  <header class="client-dialog-head"><div><span>CLIENT DIRECTORY &amp; BILLING</span><h2 id="clientModalTitle">Add client</h2><p>Create one reliable record for contacts, billing and invoicing.</p></div><button class="client-close" type="button" data-close-client aria-label="Close client form">×</button></header>
+  <form id="clientForm">
+   <section class="client-form-section"><div class="client-section-title"><h3>Client information</h3><span>Directory identity</span></div><div class="client-field-grid">
+    <label>Client / business name <input name="businessName" autocomplete="organization" required placeholder="e.g. Northstar Ltd."></label>
+    <label>Legal business name <input name="legalName" autocomplete="organization" placeholder="Registered legal name"></label>
+    <label>Tax or registration number <input name="taxNumber" placeholder="Tax ID / registration number"></label>
+    <label>Client status <select name="status"><option>Prospect</option><option selected>Active</option><option>On hold</option><option>Archived</option></select></label>
+   </div></section>
+   <section class="client-form-section"><div class="client-section-title"><h3>Primary contact</h3><span>People Directory</span></div><div class="client-field-grid">
+    <label>Contact name <input name="contactName" autocomplete="name" required placeholder="First and last name"></label>
+    <label>Role / title <input name="contactRole" autocomplete="organization-title" placeholder="e.g. Operations Director"></label>
+    <label>Primary email <input name="contactEmail" type="email" autocomplete="email" required placeholder="name@company.com"></label>
+    <label>Alternate email <input name="alternateEmail" type="email" placeholder="Optional alternate email"></label>
+    <label>Phone <input name="phone" type="tel" autocomplete="tel" placeholder="Country code and number"></label>
+    <label>Preferred contact method <select name="contactMethod"><option>Email</option><option>Phone</option><option>Either</option></select></label>
+   </div></section>
+   <section class="client-form-section"><div class="client-section-title"><h3>Billing &amp; invoicing</h3><span>Accounts receivable</span></div><label class="copy-contact"><input id="copyPrimaryContact" type="checkbox"> Use primary contact for billing</label><div class="client-field-grid">
+    <label>Billing contact <input name="billingName" placeholder="Billing contact name"></label>
+    <label>Billing email <input name="billingEmail" type="email" required placeholder="billing@company.com"></label>
+    <label>Currency <select name="currency"><option>USD</option><option>CAD</option><option>EUR</option><option>GBP</option></select></label>
+    <label>Payment terms <select name="paymentTerms"><option>Due on receipt</option><option>Net 15</option><option selected>Net 30</option><option>Net 45</option><option>Net 60</option></select></label>
+    <label>Purchase order reference <input name="purchaseOrder" placeholder="Optional PO number"></label>
+    <label>Invoice delivery <select name="invoiceDelivery"><option>Email PDF</option><option>E-invoice</option><option>Client portal</option></select></label>
+    <label class="client-field-wide">Billing address <textarea name="billingAddress" autocomplete="street-address" placeholder="Street, city, region, postal code and country"></textarea></label>
+    <label class="client-field-wide">Notes <textarea name="notes" placeholder="Billing instructions, service notes or internal reference"></textarea></label>
+   </div></section>
+   <p class="client-form-note">This prototype prepares the client record for secure backend validation. Contact and billing details are not stored in this browser.</p>
+   <div class="client-form-actions"><button class="workspace-button" type="button" data-close-client>Cancel</button><button class="workspace-button primary-action" type="submit">Save client</button></div>
+  </form>
+ </div>
+</div>
 
 <div class="rbac-modal" id="deleteStaffModal" role="dialog" aria-modal="true" aria-labelledby="deleteStaffTitle">
  <div class="rbac-dialog"><h2 id="deleteStaffTitle">Delete staff member?</h2><p>This is a protected action. Deactivate the account when access should stop temporarily. To request permanent deletion, type <strong>DELETE</strong> and confirm. The backend must retain required audit evidence without retaining unnecessary personal data.</p><input id="deleteStaffConfirm" aria-label="Type DELETE to confirm" autocomplete="off" placeholder="Type DELETE"><div class="dialog-actions"><button type="button" id="cancelStaffDelete">Cancel</button><button type="button" class="confirm-delete" id="confirmStaffDelete" disabled>Delete</button></div></div>
