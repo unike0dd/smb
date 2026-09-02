@@ -70,6 +70,7 @@ button,a,input,select,textarea{max-width:100%}
 </style>
 <link rel="stylesheet" href="responsive.css?v=1">
 <link rel="stylesheet" href="screens/adaptive.css?v=1">
+<link rel="stylesheet" href="smb-workspaces.css?v=1">
 </head>
 <body>
 <main class="app">
@@ -88,6 +89,8 @@ button,a,input,select,textarea{max-width:100%}
     <article class="panel"><div class="panel-title"><div><h2 id="workspaceTitle"></h2><p>Ordered by priority and recent activity</p></div><button data-action="Filters opened">Filter ⌄</button></div><div class="table-head"><span>Item</span><span>Status</span><span>Progress</span></div><div id="rowList"></div></article>
     <aside class="right-stack"><article class="panel"><div class="panel-title"><div><h2>Next actions</h2><p>3 items to move forward</p></div></div><div id="tasks"></div></article><article class="insight"><span>✦ SMART INSIGHT</span><h2>Best next move</h2><p id="insight"></p><button data-action="Recommendation opened">View recommendation →</button></article></aside>
    </section>
+
+   <section class="section-workspace" id="sectionWorkspace" aria-live="polite"></section>
 
    <section class="panel staff-access" id="staffAccess" aria-labelledby="staffAccessTitle">
     <div class="staff-access-head"><div><h2 id="staffAccessTitle">Staff access &amp; RBAC</h2><p>Preset access for supervisors and staff. Senior roles and promotions require manual SMB Owner approval.</p></div><label class="staff-master"><input type="checkbox" id="allStaffActive" checked> All staff active</label></div>
@@ -166,6 +169,7 @@ $("search").addEventListener("input",renderRows);render();
  document.getElementById("staffAuthorization")?.addEventListener("submit",event=>{event.preventDefault();notify("Reauthentication will be verified by the secure backend");event.currentTarget.reset()});
 })();
 </script>
+<script src="smb-workspaces.js?v=1" defer></script>
 <script src="screens/adaptive.js?v=1" defer></script>
 </body>
 </html>
