@@ -77,6 +77,24 @@ html[data-theme="dark"] .prototype-lock{background:#382521;color:#efc9c2}
 @media(max-width:600px){.workspace-toolbar{align-items:flex-start;flex-direction:column}.workspace-actions{width:100%;justify-content:flex-start}.workspace-actions .workspace-button{flex:1 1 auto}.workspace-summary,.source-grid,.group-grid,.category-grid,.field-grid,.field-grid.three,.filter-row{grid-template-columns:1fr}.workspace-task,.workspace-record{grid-template-columns:1fr}.workspace-task-actions{justify-content:flex-start;flex-wrap:wrap}.bar-row{grid-template-columns:85px minmax(0,1fr) 30px}.workspace-card{padding:14px}.section-workspace{margin-top:12px}}
 @media(prefers-reduced-motion:reduce){.workspace-tab,.workspace-button,.mini-action{transition:none}}
 
+/* Dedicated Settings page */
+.settings-layout{display:grid;grid-template-columns:minmax(210px,.42fr) minmax(0,1.58fr);gap:15px;align-items:start}
+.settings-tree{display:grid;gap:10px;padding:12px;background:var(--white);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow)}
+.settings-tree section{display:grid;gap:4px}.settings-tree h3{margin:4px 8px;color:var(--muted);font-size:8px;letter-spacing:.12em;text-transform:uppercase}
+.settings-tree button{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:7px;width:100%;border:0;border-radius:9px;padding:10px;background:transparent;color:var(--ink);font-size:10px;text-align:left;cursor:pointer}
+.settings-tree button:hover,.settings-tree button.active{background:var(--orange-soft);color:var(--warm-accent)}
+.settings-tree button b{font-size:15px;font-weight:500}.settings-tree button em,.settings-enabled{padding:4px 7px;border-radius:20px;background:#edf7f1;color:#35664e;font-size:8px;font-style:normal;font-weight:850}
+.settings-pane{min-height:420px}.settings-pane>h3{font-size:16px}.settings-pane>p,.settings-pane .workspace-card-head p{margin:4px 0 16px;color:var(--muted);font-size:10px;line-height:1.55}
+.settings-person{display:grid;grid-template-columns:minmax(140px,.7fr) minmax(180px,1.2fr) auto;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.settings-person strong,.settings-person small{display:block}.settings-person strong{font-size:11px}.settings-person small{margin-top:3px;color:var(--muted);font-size:8px}.settings-person>span{font-size:9px}.settings-person button,.settings-options button{border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:var(--white);color:var(--ink);font-size:9px;font-weight:800;cursor:pointer}
+.settings-options{display:grid;gap:8px}.settings-options>label{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--canvas)}
+.settings-options b,.settings-options small{display:block}.settings-options b{font-size:10px}.settings-options small{margin-top:3px;color:var(--muted);font-size:8px}.settings-options input,.settings-enabled input{accent-color:var(--green)}
+html[data-theme="dark"] .settings-tree,html[data-theme="dark"] .settings-person button,html[data-theme="dark"] .settings-options button{background:#1d2a34;color:#ecf2f5;border-color:#3a4b58}
+html[data-theme="dark"] .settings-tree button{color:#ecf2f5}html[data-theme="dark"] .settings-tree button:hover,html[data-theme="dark"] .settings-tree button.active{background:#332b1e;color:#eadbb9}
+html[data-theme="dark"] .settings-options>label{background:#16222b;border-color:#3a4b58}
+@media(max-width:800px){.settings-layout{grid-template-columns:1fr}.settings-tree{grid-template-columns:repeat(3,minmax(0,1fr))}.settings-person{grid-template-columns:1fr}.settings-person button{justify-self:start}}
+@media(max-width:600px){.settings-tree{grid-template-columns:1fr}.settings-pane{min-height:0}}
+
 /* Persistent navigation control, notifications and client capture */
 .app{transition:grid-template-columns .24s ease}
 .sidebar{transition:transform .24s ease,visibility .24s ease}
