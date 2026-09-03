@@ -1,6 +1,6 @@
 (() => {
   if (typeof definitions !== "undefined" && definitions.settings) {
-    definitions.settings[1] = "Manage the business profile, personal profile, security, staff configuration and delegated access.";
+    definitions.settings[1] = "Manage profiles, staff access, delegated workspaces, activity and payroll authorization.";
     definitions.settings[2] = "";
   }
   const primary = document.getElementById("primary");
