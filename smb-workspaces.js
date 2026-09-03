@@ -126,6 +126,32 @@
   const chartMarkup = () => `<div class="bar-chart">${[["Confirmation rate", 74], ["Interview completion", 88], ["Interview → approval", 66], ["Offer acceptance", 84], ["Onboarding completion", 91]].map(item => `<div class="bar-row"><span>${item[0]}</span><div class="bar-track"><div class="bar-fill" style="width:${item[1]}%"></div></div><b>${item[1]}%</b></div>`).join("")}</div>`;
   const approvalMarkup = () => `<div class="approval-chain"><div class="approval-step done">Requester<br>Submitted</div><div class="approval-step done">Manager<br>Approved</div><div class="approval-step current">HR Manager<br>Reviewing</div><div class="approval-step">SMB Owner<br>When required</div><div class="approval-step">Audit<br>Recorded</div></div>`;
 
+  const SETTINGS_SECTIONS = [
+    ["General", [["business-profile", "Business Profile"], ["my-profile", "My Profile"], ["security", "Security"]]],
+    ["Configuration", [["staff-setting", "Staff Setting"], ["promotion", "Promotion", "Enabled"]]],
+    ["Delegate", [["delegate-staff", "Staff Setting"], ["delegate-management", "Management"], ["delegate-workspace", "Workspace"], ["delegate-task", "Task"], ["delegate-activity", "Activity"]]]
+  ];
+  const employeeRows = (management = false) => (management ? [
+    ["Morgan Lee", "Management Admin", "Administration · Approvals · Reports"],
+    ["Elena Park", "SMB Owner", "Owner authorization · Full audit"]
+  ] : [
+    ["Sofía Ramírez", "Supervisor", "Team · Schedules"],
+    ["Luis Mendoza", "Staff", "Tasks · Documents"]
+  ]).map(person => `<article class="settings-person"><div><strong>${person[0]}</strong><small>${person[1]}</small></div><span>${person[2]}</span><button type="button" data-workspace-action="Review ${person[0]} RBAC">Review RBAC</button></article>`).join("");
+  const settingsPane = key => {
+    if (key === "business-profile") return `<h3>Business Profile</h3><p>Manage the legal and operating identity used throughout this business workspace.</p>${fieldsMarkup(["Business name", "Legal business name", "Tax number", "Primary business email", "Business phone", "Timezone", "Currency", "Address"], "Business Profile")}`;
+    if (key === "my-profile") return `<h3>My Profile</h3><p>Manage the signed-in owner’s personal and recovery information.</p>${fieldsMarkup(["First name", "Last name", "Username", "Work email", "Phone", "Job title"], "My Profile")}`;
+    if (key === "security") return `<h3>Security</h3><p>Review account protection, recovery methods and active access.</p><div class="settings-options"><label><span><b>Multi-factor authentication</b><small>Required for privileged roles</small></span><input type="checkbox" checked></label><label><span><b>Trusted devices</b><small>6 active sessions</small></span><button type="button" data-workspace-action="Trusted devices opened">Review</button></label><label><span><b>Recovery methods</b><small>Owner confirmation required</small></span><button type="button" data-workspace-action="Recovery methods opened">Review</button></label></div>`;
+    if (key === "staff-setting") return `<h3>Configuration · Staff Setting</h3><p>Staff are listed by employee first name, last name and assigned RBACs. Use the detailed controls below to configure access.</p>${employeeRows()}`;
+    if (key === "promotion") return `<div class="workspace-card-head"><div><h3>Configuration · Promotion</h3><p>Promotion configuration is enabled. Every promotion requires final SMB Owner authorization.</p></div><label class="settings-enabled"><input type="checkbox" checked> Enabled</label></div>${employeeRows(true)}`;
+    if (key === "delegate-staff") return `<h3>Delegate · Staff Setting</h3><p>Assign limited staff delegation by employee name, last name and exact RBAC scope.</p>${employeeRows()}`;
+    if (key === "delegate-management") return `<h3>Delegate · Management</h3><p>Management delegation requires manual owner review and a defined expiration.</p>${employeeRows(true)}`;
+    if (key === "delegate-workspace") return `<h3>Delegate · Workspace</h3><p>Choose which workspaces an approved delegate may enter.</p><div class="settings-options">${["Talent Acquisition", "Onboarding", "Employees", "Documents", "People Directory", "Reports & Analytics"].map(name => `<label><span><b>${name}</b><small>Delegated workspace access</small></span><input type="checkbox"></label>`).join("")}</div>`;
+    if (key === "delegate-task") return `<h3>Delegate · Task</h3><p>Control whether delegates can view, create, update or complete assigned tasks.</p><div class="permission-set">${["View", "Create", "Update", "Complete", "Reassign"].map((name, i) => `<label class="permission-toggle"><input type="checkbox" ${i < 2 ? "checked" : ""}> ${name}</label>`).join("")}</div>`;
+    return `<h3>Delegate · Activity</h3><p>Review accountable delegate actions and authorization history.</p>${recordsMarkup([["Morgan Lee", "Viewed employee workspace · Sep 3", "Recorded"], ["Sofía Ramírez", "Updated assigned task · Sep 2", "Recorded"], ["Luis Mendoza", "Document access requested · Sep 2", "Owner review"]])}`;
+  };
+  const settingsMarkup = active => `<div class="settings-layout"><nav class="settings-tree" aria-label="Settings sections">${SETTINGS_SECTIONS.map(group => `<section><h3>${group[0]}</h3>${group[1].map(item => `<button class="${item[0] === active ? "active" : ""}" type="button" data-settings-section="${item[0]}"><span>${item[1]}</span>${item[2] ? `<em>${item[2]}</em>` : ""}<b>›</b></button>`).join("")}</section>`).join("")}</nav><article class="workspace-card settings-pane">${settingsPane(active)}</article></div>`;
+
   let clientReturnFocus = null;
   const openClientForm = trigger => {
     const modal = $("clientModal");
@@ -161,10 +187,20 @@
     host.classList.toggle("active", !isOverview);
     metrics.hidden = !isOverview;
     dashboard.hidden = !isOverview;
-    staff.hidden = screen !== "settings";
+    staff.hidden = !(screen === "settings" && requestedTab === "staff-setting");
     if (isOverview) { host.innerHTML = ""; return; }
     const data = DATA[screen];
     if (!data) return;
+    if (screen === "settings") {
+      const setting = requestedTab || "business-profile";
+      host.dataset.screen = screen;
+      host.dataset.tab = setting;
+      host.innerHTML = `<div class="workspace-shell"><header class="workspace-toolbar"><div><h2>Settings</h2><p>Business profile, personal profile, security, staff configuration and delegated access.</p></div></header>${settingsMarkup(setting)}<article class="workspace-card"><div class="security-note">Interface controls do not grant authority. Production access must validate identity, tenant membership, exact permission, MFA, owner approval and the audit event through the trusted backend.</div></article></div>`;
+      host.querySelectorAll("[data-settings-section]").forEach(button => button.addEventListener("click", () => render("settings", button.dataset.settingsSection)));
+      host.querySelectorAll("[data-workspace-action]").forEach(button => button.addEventListener("click", () => toast(`${button.dataset.workspaceAction} opened`)));
+      host.querySelectorAll(".workspace-form").forEach(form => form.addEventListener("submit", event => { event.preventDefault(); toast("Settings request prepared for backend validation"); }));
+      return;
+    }
     const tab = requestedTab && data.tabs.includes(requestedTab) ? requestedTab : data.tabs[0];
     host.dataset.screen = screen;
     host.dataset.tab = tab;
