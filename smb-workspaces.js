@@ -124,7 +124,7 @@
     ["operations", "▣", "Operations & Delivery"],
     ["data", "ↄ", "Data & Integrations"]
   ];
-  const settingsShellMarkup = activeSection => `<div class="settings-sample-shell settings-clean-shell"><nav class="settings-sample-nav" aria-label="Settings sections">${SETTINGS_SECTIONS.map(section => `<button class="${section[0] === activeSection ? "active" : ""}" type="button" data-settings-section="${section[0]}"><i aria-hidden="true">${section[1]}</i><span>${section[2]}</span></button>`).join("")}</nav><section class="settings-empty-canvas" aria-label="${SETTINGS_SECTIONS.find(section => section[0] === activeSection)?.[2] || "Settings"}"></section></div>`;
+  const settingsShellMarkup = activeSection => `<nav class="settings-sample-nav settings-menu-only" aria-label="Settings sections">${SETTINGS_SECTIONS.map(section => `<button class="${section[0] === activeSection ? "active" : ""}" type="button" data-settings-section="${section[0]}"><i aria-hidden="true">${section[1]}</i><span>${section[2]}</span></button>`).join("")}</nav>`;
 
   let clientReturnFocus = null;
   const openClientForm = trigger => {
@@ -155,12 +155,16 @@
     const metrics = $("metrics");
     const dashboard = document.querySelector(".dashboard-grid");
     const primary = $("primary");
+    const welcome = document.querySelector(".welcome");
+    const breadcrumb = document.querySelector(".breadcrumb");
     if (!host) return;
     const isOverview = screen === "overview";
     host.classList.toggle("active", !isOverview);
     metrics.hidden = !isOverview;
     dashboard.hidden = !isOverview;
     if (primary) primary.hidden = screen === "settings";
+    if (welcome) welcome.hidden = screen === "settings";
+    if (breadcrumb) breadcrumb.hidden = screen === "settings";
     if (isOverview) { host.innerHTML = ""; return; }
     if (screen === "settings") {
       const section = SETTINGS_SECTIONS.some(item => item[0] === requestedTab) ? requestedTab : SETTINGS_SECTIONS[0][0];
