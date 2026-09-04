@@ -201,7 +201,7 @@
     const isOverview = screen === "overview";
     host.classList.toggle("active", !isOverview);
     metrics.hidden = !isOverview;
-    dashboard.hidden = !isOverview;
+    if (dashboard) dashboard.hidden = !isOverview;
     staff.hidden = !(screen === "settings" && requestedTab === "staff-setting");
     if (isOverview) { host.innerHTML = ""; return; }
     const data = DATA[screen];
