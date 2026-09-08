@@ -115,17 +115,6 @@
   const chartMarkup = () => `<div class="bar-chart">${[["Confirmation rate", 74], ["Interview completion", 88], ["Interview → approval", 66], ["Offer acceptance", 84], ["Onboarding completion", 91]].map(item => `<div class="bar-row"><span>${item[0]}</span><div class="bar-track"><div class="bar-fill" style="width:${item[1]}%"></div></div><b>${item[1]}%</b></div>`).join("")}</div>`;
   const approvalMarkup = () => `<div class="approval-chain"><div class="approval-step done">Requester<br>Submitted</div><div class="approval-step done">Manager<br>Approved</div><div class="approval-step current">HR Manager<br>Reviewing</div><div class="approval-step">SMB Owner<br>When required</div><div class="approval-step">Audit<br>Recorded</div></div>`;
 
-  const SETTINGS_SECTIONS = [
-    ["account", "♢", "Account & Security"],
-    ["business", "▦", "Business Profile"],
-    ["people", "♙", "People & Access"],
-    ["audit", "♧", "Audit & Alerts"],
-    ["sessions", "♧", "Sessions & Support"],
-    ["operations", "▣", "Operations & Delivery"],
-    ["data", "ↄ", "Data & Integrations"]
-  ];
-  const settingsShellMarkup = activeSection => `<nav class="settings-sample-nav settings-menu-only" aria-label="Settings sections">${SETTINGS_SECTIONS.map(section => `<button class="${section[0] === activeSection ? "active" : ""}" type="button" data-settings-section="${section[0]}"><i aria-hidden="true">${section[1]}</i><span>${section[2]}</span></button>`).join("")}</nav>`;
-
   let clientReturnFocus = null;
   const openClientForm = trigger => {
     const modal = $("clientModal");
@@ -167,11 +156,9 @@
     if (breadcrumb) breadcrumb.hidden = screen === "settings";
     if (isOverview) { host.innerHTML = ""; return; }
     if (screen === "settings") {
-      const section = SETTINGS_SECTIONS.some(item => item[0] === requestedTab) ? requestedTab : SETTINGS_SECTIONS[0][0];
       host.dataset.screen = screen;
-      host.dataset.tab = section;
-      host.innerHTML = settingsShellMarkup(section);
-      host.querySelectorAll("[data-settings-section]").forEach(button => button.addEventListener("click", () => render("settings", button.dataset.settingsSection)));
+      delete host.dataset.tab;
+      host.innerHTML = "";
       return;
     }
     const data = DATA[screen];
