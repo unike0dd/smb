@@ -1,4 +1,4 @@
-(()=>{"use strict";
+(()=>{"use strict";const init=()=>{
 const model=[
  {title:"Overview",icon:"⌂",items:[]},
  {title:"Talent Acquisition",icon:"◎",items:["Documents Received","Approvals","Recruiting","Onboarding","Employees"]},
@@ -39,4 +39,4 @@ nav.querySelectorAll(".drawer-parent").forEach(btn=>btn.addEventListener("click"
 nav.querySelectorAll(".drawer-child").forEach(btn=>btn.addEventListener("click",()=>{const group=model.find(g=>g.title===btn.dataset.group);markActive(group.title,btn.dataset.item);showModule(group,btn.dataset.item);if(matchMedia("(max-width:900px)").matches)setDrawer(false)}));
 nav.querySelector('[data-group="Overview"]').addEventListener("click",()=>{markActive("Overview");showOverview();setDrawer(false)});
 setDrawer(false);showOverview();
-})();
+};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();})();
