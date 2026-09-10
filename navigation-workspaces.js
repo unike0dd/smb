@@ -99,7 +99,7 @@
       const a = document.createElement('a'); a.href = new URL(path, home); a.innerHTML = label(name); legacy.append(a);
     });
   }
-  drawer.querySelector('.wn-more').hidden = !legacy.children.length;
+  drawer.querySelector('.wn-more').hidden = true;
   const surface = document.createElement('section');
   surface.className = 'wn-surface';
   surface.dataset.uiControl = '';
