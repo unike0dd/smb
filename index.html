@@ -67,11 +67,91 @@ button,a,input,select,textarea{max-width:100%}
   .side-nav button{min-width:58px}
 }
 
+
+/* High-quality dark-mode contrast — accessible, calm, and consistent */
+html[data-theme="dark"]{
+  --ink:#f2f7f4;
+  --muted:#bdcbc4;
+  --line:#52645b;
+  --canvas:#0f1814;
+  --white:#1a2822;
+  --nav:#14231d;
+  --nav2:#0b1511;
+  --orange:#b84f24;
+  --orange-soft:#38251d;
+  --green:#7fc39e;
+  --shadow:0 10px 28px rgba(0,0,0,.34);
+}
+html[data-theme="dark"] body,
+html[data-theme="dark"] main,
+html[data-theme="dark"] .workspace,
+html[data-theme="dark"] .content{background:var(--canvas);color:var(--ink)}
+html[data-theme="dark"] .topbar{
+  background:rgba(18,30,25,.98);
+  color:var(--ink);
+  border-color:var(--line);
+}
+html[data-theme="dark"] :is(.panel,.metrics article,.data-row,.search,.round,.panel-title button,.workspace-toolbar,.workspace-summary article,.workspace-card,.settings-tree,.settings-section-body,.people-table-row,.employee-detail,.person-detail,.wizard-dialog,.client-dialog,.client-dialog-head,.client-form-actions,.role-presets button,.access-controls label,.menu-toggle,.review-access,.workspace-button,.mini-action,.settings-person button,.settings-options button,.user-access-tools input,.user-access-tools select,.user-access-tools button,.team-summary button,.user-row-actions button,.settings-field input,.settings-field select,.people-tools input,.people-tools select,.activation-add input,.workspace-create input,.employee-controls input,.employee-controls select,.task-access input,.task-access select){
+  background:var(--white);
+  color:var(--ink);
+  border-color:var(--line);
+}
+html[data-theme="dark"] :is(h1,h2,h3,h4,strong,b,.row-main b,.staff-identity strong,.workspace-card-title){color:var(--ink)}
+html[data-theme="dark"] :is(p,small,.muted,.panel-title p,.row-main small,.task small,.staff-identity span,.breadcrumb,.table-head){color:var(--muted)}
+html[data-theme="dark"] :is(input,select,textarea)::placeholder{color:#91a198;opacity:1}
+html[data-theme="dark"] :is(input,select,textarea):focus{
+  outline:3px solid rgba(127,195,158,.28);
+  border-color:#7fc39e;
+}
+html[data-theme="dark"] .ui-toggle{
+  background:#24362e;
+  color:#f5faf7;
+  border-color:#71867b;
+  box-shadow:0 2px 10px rgba(0,0,0,.3);
+}
+html[data-theme="dark"] .ui-toggle:hover,
+html[data-theme="dark"] .ui-toggle:focus-visible{
+  background:#30483d;
+  border-color:#9dcbb5;
+  box-shadow:0 0 0 3px rgba(157,203,181,.24);
+}
+html[data-theme="dark"] :is(.primary,.primary-action,.people-add,.user-access-tools>button,.wizard-steps>span.active){
+  background:#9f421f;
+  border-color:#c76a3e;
+  color:#fff;
+}
+html[data-theme="dark"] :is(.primary:hover,.primary-action:hover,.people-add:hover,.user-access-tools>button:hover){background:#b95024}
+html[data-theme="dark"] :is(.status-chip.pending,.approval-step.current,.security-note,.rbac-note,.client-form-note,.role-director){
+  background:#342b18;
+  color:#f4d99a;
+  border-color:#806d3b;
+}
+html[data-theme="dark"] .prototype-lock{
+  background:#351f1c;
+  color:#f1c9c2;
+  border-color:#80524b;
+}
+html[data-theme="dark"] :is(.danger-word,.danger-action){color:#fff}
+html[data-theme="dark"] .data-row:hover,
+html[data-theme="dark"] .people-table-row:hover{background:#263a31}
+html[data-theme="dark"] .status{background:#244234;color:#bce5ce}
+html[data-theme="dark"] .insight{
+  background:linear-gradient(135deg,#36271e,#1a2822);
+  color:var(--ink);
+  border-color:#72513b;
+}
+html[data-theme="dark"] a{color:#8fcdb0}
+html[data-theme="dark"] a:hover{color:#b8e4cf}
+@media(prefers-contrast:more){
+  html[data-theme="dark"]{--ink:#fff;--muted:#d8e2dd;--line:#71847b}
+}
+
 </style>
 <link rel="stylesheet" href="responsive.css?v=1">
 <link rel="stylesheet" href="screens/adaptive.css?v=1">
 <link rel="stylesheet" href="smb-workspaces.css?v=6">
-<link rel="stylesheet" href="navigation-workspaces.css?v=1">\n</head>
+<link rel="stylesheet" href="navigation-workspaces.css?v=1">
+</head>
 <body>
 <main class="app" id="dashboardApp">
  <aside class="sidebar" id="appSidebar">
@@ -180,5 +260,6 @@ $("search").addEventListener("input",renderRows);render();
 </script>
 <script src="smb-workspaces.js?v=6" defer></script>
 <script src="screens/adaptive.js?v=1" defer></script>
-<script src="navigation-workspaces.js?v=1"></script>\n</body>
+<script src="navigation-workspaces.js?v=1"></script>
+</body>
 </html>
