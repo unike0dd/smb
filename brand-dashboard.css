@@ -204,3 +204,89 @@ html[data-theme="dark"] .wn-enabled{
 @media(prefers-reduced-motion:reduce){
   :where(.panel,.metrics article,.workspace-card,.module-screen,.wn-panel,.primary){transition:none!important;transform:none!important}
 }
+
+
+/* Brand v2: decisive cascade layer for legacy dashboard selectors */
+@layer gabo-brand-v2{
+  html:not([data-theme="dark"]) body,
+  html:not([data-theme="dark"]) main,
+  html:not([data-theme="dark"]) .workspace,
+  html:not([data-theme="dark"]) .content,
+  html:not([data-theme="dark"]) .wn-surface{
+    background-color:#fbf8f1!important;
+    color:#24322e;
+  }
+  html:not([data-theme="dark"]) .topbar{
+    background:rgba(251,248,241,.96)!important;
+    border-color:#ddd3c4!important;
+  }
+  html:not([data-theme="dark"]) .sidebar{
+    background:
+      radial-gradient(circle at 18% 0%,rgba(214,161,60,.14),transparent 28%),
+      linear-gradient(180deg,#153f36,#0e3029)!important;
+  }
+  html:not([data-theme="dark"]) :is(.panel,.metrics article,.workspace-toolbar,.workspace-summary article,.workspace-card,.settings-tree,.settings-section-body,.people-table-row,.employee-detail,.person-detail,.wizard-dialog,.client-dialog,.module-screen,.wn-panel,.wn-tablist){
+    background:#fffdf8!important;
+    border-color:#ddd3c4!important;
+    color:#24322e!important;
+  }
+  html:not([data-theme="dark"]) :is(.welcome h1,.nav-workspace-head h1,.module-screen h2,.panel h2,.panel h3){
+    color:#0e3029!important;
+  }
+  html:not([data-theme="dark"]) :is(.eyebrow,.kicker){color:#245f78!important}
+  html:not([data-theme="dark"]) :is(.primary,.primary-action,.people-add,.user-access-tools>button){
+    background:linear-gradient(145deg,#dfad4d,#d6a13c)!important;
+    color:#0e3029!important;
+    border-color:#c28b28!important;
+  }
+  html:not([data-theme="dark"]) :is(.menu-toggle,.round,.ui-toggle,.search,.module-tab){
+    background:#fffdf8!important;
+    color:#24322e!important;
+    border-color:#ddd3c4!important;
+  }
+  html:not([data-theme="dark"]) .wn-drawer{
+    background:
+      radial-gradient(circle at 12% 4%,rgba(214,161,60,.10),transparent 28%),
+      #fffdf8!important;
+    color:#24322e!important;
+  }
+  html:not([data-theme="dark"]) .wn-section.wn-active,
+  html:not([data-theme="dark"]) .wn-subitem.wn-active,
+  html:not([data-theme="dark"]) .wn-tab[aria-selected="true"]{
+    background:#f5e8c9!important;
+    color:#0e3029!important;
+    border-color:#cfc2af!important;
+  }
+  html[data-theme="dark"] body,
+  html[data-theme="dark"] main,
+  html[data-theme="dark"] .workspace,
+  html[data-theme="dark"] .content,
+  html[data-theme="dark"] .wn-surface{
+    background-color:#0f1814!important;
+    color:#f1f7f4!important;
+  }
+  html[data-theme="dark"] .sidebar{
+    background:
+      radial-gradient(circle at 18% 0%,rgba(226,183,92,.10),transparent 28%),
+      linear-gradient(180deg,#0d2b24,#081a16)!important;
+  }
+  html[data-theme="dark"] .topbar{background:rgba(20,32,27,.97)!important;border-color:#4f6258!important}
+  html[data-theme="dark"] :is(.panel,.metrics article,.workspace-toolbar,.workspace-summary article,.workspace-card,.settings-tree,.settings-section-body,.people-table-row,.employee-detail,.person-detail,.wizard-dialog,.client-dialog,.module-screen,.wn-panel,.wn-tablist){
+    background:#192720!important;
+    border-color:#4f6258!important;
+    color:#f1f7f4!important;
+  }
+  html[data-theme="dark"] :is(.menu-toggle,.round,.ui-toggle,.search,.module-tab){
+    background:#21332b!important;
+    color:#f1f7f4!important;
+    border-color:#5d7167!important;
+  }
+  html[data-theme="dark"] .wn-drawer{background:#192720!important;color:#f1f7f4!important}
+  html[data-theme="dark"] .wn-section.wn-active,
+  html[data-theme="dark"] .wn-subitem.wn-active,
+  html[data-theme="dark"] .wn-tab[aria-selected="true"]{
+    background:#3a311d!important;
+    color:#f6dc9d!important;
+    border-color:#74643a!important;
+  }
+}
