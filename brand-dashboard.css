@@ -290,3 +290,30 @@ html[data-theme="dark"] .wn-enabled{
     border-color:#74643a!important;
   }
 }
+
+
+/* SMB top-bar controls: compact, right-aligned action cluster */
+.topbar{
+  justify-content:flex-start!important;
+  width:100%;
+  padding-right:clamp(18px,3vw,42px)!important;
+}
+.topbar>.top-actions{
+  margin-left:auto!important;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  flex:0 1 auto;
+}
+.topbar .ui-preferences{
+  position:static!important;
+  margin-left:0!important;
+  display:flex;
+  align-items:center;
+  flex:0 0 auto;
+}
+@media(max-width:720px){
+  .topbar{padding-right:12px!important}
+  .topbar>.top-actions{gap:6px}
+}
